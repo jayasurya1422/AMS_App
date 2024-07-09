@@ -4,7 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 
 const Ponds = () => {
   const [ponds, setPonds] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation();
+
   useEffect(() => {
     fetch('https://run.mocky.io/v3/e8ab0fca-5bf9-460a-ae14-15c600c28401')
       .then(response => response.json())
