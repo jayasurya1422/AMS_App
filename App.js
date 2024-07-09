@@ -10,18 +10,12 @@ const App = () => {
   return (
     <NavigationContainer>
       <StatusBar style="auto" />
-      <Stack.Navigator initialRouteName="SplashScreen">
-        <Stack.Screen
-          name="SplashScreen"
-          component={require('./app/screens/SplashScreen').default}
-          options={{ headerShown: false }}
-        />
+
         <Stack.Screen
           name="Root"
           component={Layout}
           options={{ headerShown: false }}
         />
-      </Stack.Navigator>
     </NavigationContainer>
   );
 };
