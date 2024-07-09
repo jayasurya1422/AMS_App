@@ -1,16 +1,81 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from expo vector icons
+import { Ionicons } from '@expo/vector-icons';
+import { db } from '../../config/firebase'; 
 
+// Import Firestore instance
 const SignUp = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [location, setLocation] = useState('');
+  const [email, setEmail] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const navigation = useNavigation();
+
+  const handleSignUp = () => {
+    // Add validation if necessary
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      alert('Passwords do not match');
+      return;
+    }
+
+    // Add user to Firestore
+    db.collection('users').add({
+      firstName,
+      lastName,
+      location,
+      email,
+      mobileNumber,
+      password,
+    })
+    .then(() => {
+      alert('User signed up successfully');
+      navigation.navigate('SignIn');
+    })
+    .catch(error => {
+      console.error('Error signing up: ', error);
+    });
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
       <View style={styles.inputContainer}>
-        {/* Email Input */}
+        <View style={styles.inputWrapper}>
+          <Ionicons name="text" size={24} color="#999" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter first name"
+            placeholderTextColor="#999"
+            value={firstName}
+            onChangeText={setFirstName}
+          />
+        </View>
+        <View style={styles.inputWrapper}>
+          <Ionicons name="text" size={24} color="#999" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter last name"
+            placeholderTextColor="#999"
+            value={lastName}
+            onChangeText={setLastName}
+          />
+        </View>
+        <View style={styles.inputWrapper}>
+          <Ionicons name="location" size={24} color="#999" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter location"
+            placeholderTextColor="#999"
+            value={location}
+            onChangeText={setLocation}
+          />
+        </View>
         <View style={styles.inputWrapper}>
           <Ionicons name="mail-outline" size={24} color="#999" style={styles.icon} />
           <TextInput
@@ -18,11 +83,21 @@ const SignUp = () => {
             placeholder="Enter Email"
             placeholderTextColor="#999"
             keyboardType="email-address"
-            autoCapitalize="none"
-            autoCompleteType="email"
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
-        {/* Password Input */}
+        <View style={styles.inputWrapper}>
+          <Ionicons name="call-outline" size={24} color="#999" style={styles.icon} />
+          <TextInput
+            style={styles.input}
+            placeholder="Enter Mobile Number"
+            placeholderTextColor="#999"
+            keyboardType="phone-pad"
+            value={mobileNumber}
+            onChangeText={setMobileNumber}
+          />
+        </View>
         <View style={styles.inputWrapper}>
           <Ionicons name="lock-closed-outline" size={24} color="#999" style={styles.icon} />
           <TextInput
@@ -30,11 +105,10 @@ const SignUp = () => {
             placeholder="Enter Password"
             placeholderTextColor="#999"
             secureTextEntry
-            autoCapitalize="none"
-            autoCompleteType="password"
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
-        {/* Confirm Password Input */}
         <View style={styles.inputWrapper}>
           <Ionicons name="lock-closed-outline" size={24} color="#999" style={styles.icon} />
           <TextInput
@@ -42,20 +116,18 @@ const SignUp = () => {
             placeholder="Confirm Password"
             placeholderTextColor="#999"
             secureTextEntry
-            autoCapitalize="none"
-            autoCompleteType="password"
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
           />
         </View>
       </View>
-      {/* Sign Up Button */}
       <TouchableOpacity
         style={styles.button}
-        onPress={() => alert('Signed Up')} // Replace with your sign-up logic
+        onPress={handleSignUp}
       >
         <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
-      {/* Navigate to Sign In */}
-      <TouchableOpacity onPress={() => navigation.navigate('screens/SignIn')}>
+      <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
         <Text style={styles.linkText}>Already have an account? Sign In</Text>
       </TouchableOpacity>
     </View>
@@ -136,3 +208,4 @@ const styles = StyleSheet.create({
 });
 
 export default SignUp;
+
