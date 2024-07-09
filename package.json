@@ -15,6 +15,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "@dotlottie/react-player": "^1.6.19",
     "@expo/vector-icons": "^14.0.2",
     "@react-native-google-signin/google-signin": "^12.2.1",
     "@react-navigation/bottom-tabs": "^6.6.0",
@@ -31,11 +32,14 @@
     "expo-status-bar": "~1.12.1",
     "expo-system-ui": "~3.0.7",
     "expo-web-browser": "~13.0.3",
+    "lottie-ios": "^4.4.3",
+    "lottie-react-native": "^6.7.2",
     "nativewind": "^2.0.11",
     "react": "18.2.0",
     "react-chartjs-2": "^5.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.74.3",
+    "react-native-animatable": "^1.4.0",
     "react-native-chart-kit": "^6.12.0",
     "react-native-fbsdk-next": "^13.0.0",
     "react-native-gesture-handler": "~2.16.1",

@@ -30,3 +30,5 @@ const styles = StyleSheet.create({
 });
 
 export default Home;
+
+// Similarly style SignIn.jsx and SignUp.jsx

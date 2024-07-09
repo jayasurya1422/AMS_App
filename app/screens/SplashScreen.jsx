@@ -1,24 +1,30 @@
 // app/screens/SplashScreen.jsx
 import React, { useEffect } from 'react';
-import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import LottieView from 'lottie-react-native';
 import { useNavigation } from '@react-navigation/native';
+
+const animationData = require('../../assets/animation.json'); // Adjusted path to animation.json
 
 const SplashScreen = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('index'); // Navigate to HomeScreen after 3 seconds
-    }, 3000);
+      navigation.replace('Root'); // Navigate to the main layout after 2 seconds
+    }, 2000);
 
     return () => clearTimeout(timer);
   }, [navigation]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>AMS</Text>
-      <ActivityIndicator size="large" color="#3498db" style={styles.indicator} />
-    </View>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+    <LottieView
+      source={require('../..animation.json')} // Adjust path as necessary
+      autoPlay
+      loop
+    />
+  </View>
   );
 };
 
@@ -27,16 +33,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-  },
-  title: {
-    fontSize: 48,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: '#333',
-  },
-  indicator: {
-    marginTop: 20,
+    backgroundColor: '#fff',
   },
 });
+
 export default SplashScreen;

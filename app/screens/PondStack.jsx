@@ -1,18 +1,19 @@
-// app/screens/PondStack.jsx
-import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Ponds from './Ponds';
-import PondDetail from './PondDetail';
+import PondDetail from './PondDetail'; // Import PondDetail screen component
 
 const Stack = createStackNavigator();
 
-const PondStack = () => {
+const App = () => {
   return (
-    <Stack.Navigator>
-      <Stack.Screen name="Ponds" component={Ponds} options={{ title: 'Ponds' }} />
-      <Stack.Screen name="PondDetail" component={PondDetail} options={{ title: 'Pond Detail' }} />
-    </Stack.Navigator>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Ponds" component={Ponds} />
+        <Stack.Screen name="PondDetail" component={PondDetail} /> {/* Ensure PondDetail is included */}
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
-export default PondStack;
+export default App;
