@@ -1,6 +1,5 @@
-// app/screens/Ponds.jsx
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput, Button } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 const Ponds = () => {
@@ -18,13 +17,16 @@ const Ponds = () => {
       setPonds([...ponds, newPond]);
       setPondName('');
       setAddingPond(false);
+
+      // Navigate to Notifications and pass new pond data
+      navigation.navigate('Notifications', { newPond });
     }
   };
 
   const renderPond = ({ item }) => (
     <TouchableOpacity
       style={styles.pondItem}
-      onPress={() => navigation.navigate('PondDetail', { pondId: item.id })}
+      onPress={() => navigation.navigate('screens/PondDetail', { pondId: item.id, pondName: item.name })}
     >
       <Text style={styles.pondName}>{item.name}</Text>
     </TouchableOpacity>
@@ -47,19 +49,13 @@ const Ponds = () => {
             placeholder="Enter pond name"
             value={pondName}
             onChangeText={setPondName}
-            autoFocus={true} // Autofocus on input when adding pond
+            autoFocus={true}
           />
           <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.actionButton}
-              onPress={addPond}
-            >
+            <TouchableOpacity style={styles.actionButton} onPress={addPond}>
               <Text style={styles.buttonText}>Add</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.actionButton, { backgroundColor: '#dc3545' }]}
-              onPress={() => setAddingPond(false)}
-            >
+            <TouchableOpacity style={[styles.actionButton, { backgroundColor: '#dc3545' }]} onPress={() => setAddingPond(false)}>
               <Text style={styles.buttonText}>Cancel</Text>
             </TouchableOpacity>
           </View>
@@ -67,10 +63,7 @@ const Ponds = () => {
       )}
 
       {!addingPond && (
-        <TouchableOpacity
-          style={styles.addButton}
-          onPress={() => setAddingPond(true)}
-        >
+        <TouchableOpacity style={styles.addButton} onPress={() => setAddingPond(true)}>
           <Text style={styles.addButtonText}>Add Pond</Text>
         </TouchableOpacity>
       )}
@@ -100,7 +93,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   addButton: {
-    backgroundColor: '#28a745', // Light green background
+    backgroundColor: '#28a745',
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginVertical: 10,
@@ -129,7 +122,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   actionButton: {
-    backgroundColor: '#007bff', // Blue background for "Add"
+    backgroundColor: '#007bff',
     paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 8,

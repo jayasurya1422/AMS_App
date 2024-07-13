@@ -1,23 +1,11 @@
-import React from 'react';
+// app/index.js
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { StatusBar } from 'expo-status-bar';
-import Layout from './app/_layout';
+import Layout from './_layout';
 
-const Stack = createStackNavigator();
-
-const App = () => {
+export default function App() {
   return (
     <NavigationContainer>
-      <StatusBar style="auto" />
-
-        <Stack.Screen
-          name="Root"
-          component={Layout}
-          options={{ headerShown: false }}
-        />
+      <Layout />
     </NavigationContainer>
   );
-};
-
-export default App;
+}
