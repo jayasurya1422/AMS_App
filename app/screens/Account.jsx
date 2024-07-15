@@ -2,28 +2,26 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from @expo/vector-icons
+import { Ionicons } from '@expo/vector-icons';
 
 const Account = () => {
   const navigation = useNavigation();
-  const [showMenu, setShowMenu] = useState(false); // State to manage menu visibility
+  const [showMenu, setShowMenu] = useState(false);
 
   const handleLogout = async () => {
-    // Clear pond data from AsyncStorage
+    // Clear any user data or tokens stored
     try {
-      // Example: Clear pond data for pondId 1
-      await AsyncStorage.removeItem(`pond_1_numAerators`);
-      // Add additional AsyncStorage keys related to ponds if needed
+      await AsyncStorage.clear(); // Clear all stored data
     } catch (error) {
-      console.error('Failed to clear pond data:', error);
+      console.error('Failed to clear AsyncStorage:', error);
     }
     // Navigate to the index page (SignIn and SignUp options)
-    navigation.navigate('index');
+    navigation.navigate('screens/SignIn'); // Replace 'SignIn' with your actual authentication screen name
   };
 
-  const handleEditAccount = () => {
-    // Navigate to the edit account page
-    navigation.navigate('EditAccount'); // Replace 'EditAccount' with your actual edit account screen name
+  const handleEditProfile = () => {
+    // Navigate to the edit profile screen
+    navigation.navigate('EditProfile'); // Replace 'EditProfile' with your actual edit profile screen name
   };
 
   return (
@@ -33,7 +31,7 @@ const Account = () => {
         {/* Edit icon */}
         <TouchableOpacity
           style={styles.editIcon}
-          onPress={() => setShowMenu(!showMenu)} // Toggle menu visibility
+          onPress={() => setShowMenu(!showMenu)}
         >
           <Ionicons name="settings-outline" size={24} color="#007bff" />
         </TouchableOpacity>
@@ -44,14 +42,14 @@ const Account = () => {
         <View style={styles.menu}>
           <TouchableOpacity
             style={styles.menuItem}
-            onPress={handleEditAccount} // Navigate to edit account screen
+            onPress={handleEditProfile}
           >
             <Ionicons name="person-outline" size={24} color="#007bff" />
             <Text style={styles.menuText}>Edit Profile</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={styles.menuItem}
-            onPress={handleLogout} // Logout functionality
+            style={[styles.menuItem, styles.logoutButton]}
+            onPress={handleLogout}
           >
             <Ionicons name="log-out-outline" size={24} color="#e74c3c" />
             <Text style={[styles.menuText, { color: '#e74c3c' }]}>Logout</Text>
@@ -59,7 +57,14 @@ const Account = () => {
         </View>
       )}
 
-      
+      <View style={styles.content}>
+        <Text style={styles.contentText}>
+          Welcome to your account settings!
+        </Text>
+        <Text style={styles.contentText}>
+          Manage your profile and preferences here.
+        </Text>
+      </View>
     </View>
   );
 };
@@ -104,11 +109,21 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
     marginLeft: 10,
+    color: '#333',
+  },
+  logoutButton: {
+    marginTop: 10,
   },
   content: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  contentText: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: '#555',
+    marginBottom: 10,
   },
 });
 

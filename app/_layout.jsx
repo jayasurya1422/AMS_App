@@ -6,12 +6,12 @@ const Layout = () => {
   return (
     <Stack>
       <Stack.Screen name="screens/SignIn" options={{ headerShown: false }} />
-      <Stack.Screen name="screens/SignUp" options={{ title: 'Sign Up' }} />
-      <Stack.Screen name="screens/HomeScreen" options={{ title: 'Home' }} />
-      <Stack.Screen name="screens/Ponds" options={{ title: 'Ponds' }} />
-      <Stack.Screen name="screens/PondDetail" options={{ title: 'Pond Detail' }} />
+      <Stack.Screen name="screens/SignUp" options={{ headerShown: false }} />
+      <Stack.Screen name="screens/HomeScreen" options={{ headerShown: false }} />
+      <Stack.Screen name="screens/Ponds" options={{ headerShown: false }} />
+      <Stack.Screen name="screens/PondDetail" options={{ headerShown: false }} />
+      <Stack.Screen name="screens/Notifications" options={{ headerShown: false }} />    
     </Stack>
   );
 };
-
 export default Layout;

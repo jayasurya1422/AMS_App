@@ -40,8 +40,8 @@ const Index = () => {
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
-        <Image source={logo} style={styles.logo} />
-        <Text style={styles.loadingText}>AMS</Text>
+        <Image source={logo} style={[styles.logo, styles.smallLogo]} />
+        <Text style={[styles.loadingText, { fontSize: 24 }]}>AMS</Text>
         <ActivityIndicator size="large" color="#3498db" />
       </View>
     );
@@ -83,9 +83,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   loadingText: {
-    marginTop: 20,
+    marginTop: 0,
     fontSize: 18,
     color: '#333',
+    fontWeight: 'bold',
   },
   container: {
     flex: 1,
@@ -99,6 +100,10 @@ const styles = StyleSheet.create({
     height: 100,
     marginBottom: 30,
     resizeMode: 'contain',
+  },
+  smallLogo: {
+    width: 60,
+    height: 60,
   },
   title: {
     fontSize: 24,

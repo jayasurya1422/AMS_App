@@ -1,11 +1,14 @@
-// app/index.js
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
+import { NotificationProvider } from './NotificationContext';
 import Layout from './_layout';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <Layout />
-    </NavigationContainer>
+    <NotificationProvider>
+      <NavigationContainer>
+        <Layout />
+      </NavigationContainer>
+    </NotificationProvider>
   );
 }

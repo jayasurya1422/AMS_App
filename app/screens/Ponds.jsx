@@ -17,9 +17,8 @@ const Ponds = () => {
       setPonds([...ponds, newPond]);
       setPondName('');
       setAddingPond(false);
-
-      // Navigate to Notifications and pass new pond data
-      navigation.navigate('Notifications', { newPond });
+      // Navigate to Notifications screen and pass pondName as parameter
+      navigation.navigate('Notifications', { pondName: newPond.name });
     }
   };
 
