@@ -1,15 +1,55 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Ionicons } from '@expo/vector-icons'; // Import Ionicons from expo vector icons
+import { Ionicons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 const SignIn = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleSignIn = () => {
-    // Add your sign-in logic here
-    // On successful sign-in, navigate to HomeScreen
-    navigation.replace('screens/HomeScreen');
+  const handleSignIn = async () => {
+    try {
+      if (!email || !password) {
+        alert('Please enter email and password');
+        return;
+      }
+
+      const q = query(collection(db, 'users'), where('email', '==', email));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        alert('User not found');
+        return;
+      }
+
+      let userData = null;
+      querySnapshot.forEach((doc) => {
+        userData = doc.data();
+        if (userData.password === password) {
+          AsyncStorage.setItem('userData', JSON.stringify(userData))
+          .then(() => {
+            return AsyncStorage.setItem('userEmail', email);
+          })
+          .then(() => {
+            console.log('User data stored in AsyncStorage:', userData);
+            navigation.replace('screens/HomeScreen');
+          })
+          .catch((error) => {
+            console.error('Error storing user data:', error);
+            alert('Failed to store user data');
+          });
+        } else {
+          alert('Incorrect password');
+        }
+      });
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
   };
 
   return (
@@ -26,6 +66,8 @@ const SignIn = () => {
             keyboardType="email-address"
             autoCapitalize="none"
             autoCompleteType="email"
+            value={email}
+            onChangeText={setEmail}
           />
         </View>
         {/* Password Input */}
@@ -38,33 +80,32 @@ const SignIn = () => {
             secureTextEntry
             autoCapitalize="none"
             autoCompleteType="password"
+            value={password}
+            onChangeText={setPassword}
           />
         </View>
       </View>
       {/* Sign In Button */}
-      <TouchableOpacity
-        style={styles.button}
-        onPress={handleSignIn}
-      >
+      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
       {/* Navigate to Sign Up */}
-      <TouchableOpacity
-        onPress={() => navigation.navigate('screens/SignUp')}
-      >
+      <TouchableOpacity onPress={() => navigation.navigate('screens/SignUp')}>
         <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
       </TouchableOpacity>
     </View>
   );
 };
 
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
     paddingHorizontal: 20,
+    backgroundColor: 'lightblue'
+
   },
   title: {
     fontSize: 36,
@@ -101,7 +142,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#3498db', // Change to a suitable alternative color
     width: '100%',
     height: 50,
     justifyContent: 'center',
@@ -124,7 +165,7 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   linkText: {
-    color: '#3498db',
+    color: 'black',
     fontSize: 16,
     marginTop: 10,
     textDecorationLine: 'underline',

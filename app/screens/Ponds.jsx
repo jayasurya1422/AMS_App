@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#f0f0f0',
+    backgroundColor: 'lightblue'
   },
   title: {
     fontSize: 24,
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     color: 'black',
   },
   addButton: {
-    backgroundColor: '#28a745',
+    backgroundColor: '#ff87ff',
     paddingVertical: 10,
     paddingHorizontal: 20,
     marginVertical: 10,
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   },
   addButtonText: {
     fontSize: 18,
-    color: 'white',
+    color: 'black',
   },
   addPondContainer: {
     marginVertical: 10,

@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { LinearGradient } from 'expo-linear-gradient'; // Import LinearGradient from Expo
 
 const SignUp = () => {
   const [firstName, setFirstName] = useState('');
@@ -31,7 +32,7 @@ const SignUp = () => {
         password // Consider hashing the password before storing it
       });
       alert('User registered successfully!');
-      navigation.navigate('screens/SignIn');
+      navigation.navigate('screens/SignIn'); // Navigate to SignIn screen
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -39,20 +40,23 @@ const SignUp = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <LinearGradient
+      colors={['#b3d9ff', '#99c2ff', '#85b8ff']} // Adjust these colors for a blend of blue shades
+      style={styles.container}
+    >
       <Text style={styles.title}>Sign Up</Text>
       <View style={styles.inputContainer}>
         {[
-          { placeholder: 'Enter first name', value: firstName, onChangeText: setFirstName, icon: 'text' },
-          { placeholder: 'Enter last name', value: lastName, onChangeText: setLastName, icon: 'text' },
-          { placeholder: 'Enter location', value: location, onChangeText: setLocation, icon: 'location' },
+          { placeholder: 'Enter first name', value: firstName, onChangeText: setFirstName, icon: 'person-outline' },
+          { placeholder: 'Enter last name', value: lastName, onChangeText: setLastName, icon: 'person-outline' },
+          { placeholder: 'Enter location', value: location, onChangeText: setLocation, icon: 'location-outline' },
           { placeholder: 'Enter Email', value: email, onChangeText: setEmail, icon: 'mail-outline', keyboardType: 'email-address' },
           { placeholder: 'Enter Mobile Number', value: mobileNumber, onChangeText: setMobileNumber, icon: 'call-outline', keyboardType: 'phone-pad' },
           { placeholder: 'Enter Password', value: password, onChangeText: setPassword, icon: 'lock-closed-outline', secureTextEntry: true },
           { placeholder: 'Confirm Password', value: confirmPassword, onChangeText: setConfirmPassword, icon: 'lock-closed-outline', secureTextEntry: true }
         ].map((inputProps, index) => (
           <View style={styles.inputWrapper} key={index}>
-            <Ionicons name={inputProps.icon} size={24} color="#999" style={styles.icon} />
+            <Ionicons name={inputProps.icon} size={24} color="#333" style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder={inputProps.placeholder}
@@ -71,7 +75,7 @@ const SignUp = () => {
       <TouchableOpacity onPress={() => navigation.navigate('screens/SignIn')}>
         <Text style={styles.linkText}>Already have an account? Sign In</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 };
 
@@ -80,8 +84,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
     paddingHorizontal: 20,
+    backgroundColor: 'lightblue'
+
   },
   title: {
     fontSize: 36,
@@ -118,7 +123,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   button: {
-    backgroundColor: '#3498db',
+    backgroundColor: '#3498db', // Change to a suitable alternative color
     width: '100%',
     height: 50,
     justifyContent: 'center',
@@ -141,11 +146,11 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
   },
   linkText: {
-    color: '#3498db',
+    color: '#black',
     fontSize: 16,
     marginTop: 10,
     textDecorationLine: 'underline',
   },
 });
 
-export default SignUp;
+export default SignUp;
