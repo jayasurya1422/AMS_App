@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 const Notifications = () => {
@@ -40,7 +40,7 @@ const Notifications = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       {notifications.length === 0 ? (
         <View style={styles.noNotificationsContainer}>
           <Text style={styles.noNotificationsText}>No notifications yet</Text>
@@ -52,61 +52,72 @@ const Notifications = () => {
             style={styles.notificationContainer}
             onPress={handleNotificationPress}
           >
-            <Text style={styles.notificationText}>{notification.text}</Text>
-            <Text style={styles.timestamp}>{notification.timestamp}</Text>
+            <View style={styles.notificationContent}>
+              <Text style={styles.notificationText}>{notification.text}</Text>
+              <Text style={styles.timestamp}>{notification.timestamp}</Text>
+            </View>
           </TouchableOpacity>
         ))
       )}
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#f0f0f0',
+    flexGrow: 1,
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingVertical: 20,
+    backgroundColor: '#f0f0f0',
   },
   noNotificationsContainer: {
     backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 30,
+    borderRadius: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
-    marginBottom: 20,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
     alignSelf: 'stretch',
+    marginBottom: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   noNotificationsText: {
     fontSize: 18,
     color: '#555',
     textAlign: 'center',
+    fontWeight: '500',
   },
   notificationContainer: {
     backgroundColor: '#fff',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 10,
+    borderRadius: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 2,
-    elevation: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
     marginBottom: 20,
-    alignSelf: 'stretch',
+    overflow: 'hidden',
+  },
+  notificationContent: {
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    borderLeftWidth: 5,
+    borderLeftColor: '#1976d2',
   },
   notificationText: {
     fontSize: 16,
     color: '#333',
+    fontWeight: '600',
   },
   timestamp: {
     fontSize: 14,
-    color: '#999',
+    color: '#000000',
     marginTop: 5,
+    fontStyle: 'italic',
   },
 });
 

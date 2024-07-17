@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
 import { collection, addDoc } from 'firebase/firestore';
@@ -40,6 +40,10 @@ const SignUp = () => {
 
   return (
     <View style={styles.container}>
+      <Image 
+        source={require('../../assets/images/signup.png')} // Adjusted path
+        style={styles.iconImage}
+      />
       <Text style={styles.title}>Sign Up</Text>
       <View style={styles.inputContainer}>
         {[
@@ -52,11 +56,11 @@ const SignUp = () => {
           { placeholder: 'Confirm Password', value: confirmPassword, onChangeText: setConfirmPassword, icon: 'lock-closed-outline', secureTextEntry: true }
         ].map((inputProps, index) => (
           <View style={styles.inputWrapper} key={index}>
-            <Ionicons name={inputProps.icon} size={24} color="#999" style={styles.icon} />
+            <Ionicons name={inputProps.icon} size={24} color="#000000" style={styles.icon} />
             <TextInput
               style={styles.input}
               placeholder={inputProps.placeholder}
-              placeholderTextColor="#999"
+              placeholderTextColor="#000000"
               value={inputProps.value}
               onChangeText={inputProps.onChangeText}
               keyboardType={inputProps.keyboardType}
@@ -83,8 +87,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     paddingHorizontal: 20,
   },
+  iconImage: {
+    width: 80,
+    height: 80,
+    marginBottom: 10,
+  },
   title: {
-    fontSize: 36,
+    fontSize: 28,
     fontWeight: 'bold',
     marginBottom: 20,
     color: '#333',
@@ -114,13 +123,13 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    height: 50,
-    fontSize: 16,
+    height: 45,
+    fontSize: 14,
   },
   button: {
     backgroundColor: '#3498db',
     width: '100%',
-    height: 50,
+    height: 45,
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,
@@ -136,16 +145,16 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     color: '#fff',
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: 'bold',
     textTransform: 'uppercase',
   },
   linkText: {
     color: '#3498db',
-    fontSize: 16,
+    fontSize: 22,
     marginTop: 10,
     textDecorationLine: 'underline',
   },
 });
 
-export default SignUp;
+export default SignUp;
