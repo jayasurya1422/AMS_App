@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, FlatList, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
@@ -8,24 +8,55 @@ const Ponds = () => {
   const [pondName, setPondName] = useState('');
   const navigation = useNavigation();
 
-  const addPond = () => {
+  useEffect(() => {
+    fetchPonds();
+  }, []);
+
+  const fetchPonds = async () => {
+    try {
+      const response = await fetch('http://localhost:5000/ponds');
+      const data = await response.json();
+      setPonds(data);
+    } catch (error) {
+      console.error('Failed to fetch ponds:', error);
+    }
+  };
+
+  const addPond = async () => {
     if (pondName.trim() !== '') {
       const newPond = {
-        id: ponds.length + 1,
+        pondId: ponds.length + 1,
         name: pondName.trim(),
+        i1: 0, // Placeholder value
+        i2: 0  // Placeholder value
       };
-      setPonds([...ponds, newPond]);
-      setPondName('');
-      setAddingPond(false);
-      // Navigate to Notifications screen and pass pondName as parameter
-      navigation.navigate('Notifications', { pondName: newPond.name });
+
+      try {
+        const response = await fetch('http://localhost:5000/ponds', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(newPond),
+        });
+
+        if (response.ok) {
+          setPonds([...ponds, newPond]);
+          setPondName('');
+          setAddingPond(false);
+          // Navigate to Notifications screen and pass pondName as parameter
+          navigation.navigate('Notifications', { pondName: newPond.name });
+        }
+      } catch (error) {
+        console.error('Failed to add pond:', error);
+      }
     }
   };
 
   const renderPond = ({ item }) => (
     <TouchableOpacity
       style={styles.pondItem}
-      onPress={() => navigation.navigate('screens/PondDetail', { pondId: item.id, pondName: item.name })}
+      onPress={() => navigation.navigate('PondDetail', { pondId: item.pondId, pondName: item.name })}
     >
       <Text style={styles.pondName}>{item.name}</Text>
     </TouchableOpacity>
@@ -37,7 +68,7 @@ const Ponds = () => {
 
       <FlatList
         data={ponds}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item) => item.pondId.toString()}
         renderItem={renderPond}
       />
 
