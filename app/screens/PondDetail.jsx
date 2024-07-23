@@ -1,20 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import { View, Text, TextInput, StyleSheet, ScrollView, Dimensions, TouchableOpacity } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { PieChart } from 'react-native-chart-kit';
 
 const screenWidth = Dimensions.get('window').width;
 
 const PondDetail = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const { pondId, pondName } = route.params;
   const [numAeratorsSensor1, setNumAeratorsSensor1] = useState('');
   const [numAeratorsSensor2, setNumAeratorsSensor2] = useState('');
-  const [totalCurrentTaken, setTotalCurrentTaken] = useState(0);
-  const [totalCurrentRequired, setTotalCurrentRequired] = useState(0);
-  const [aeratorsSensor1, setAeratorsSensor1] = useState([]);
-  const [aeratorsSensor2, setAeratorsSensor2] = useState([]);
 
   useEffect(() => {
     const loadPondData = async () => {
@@ -22,132 +18,50 @@ const PondDetail = () => {
         const savedNumAeratorsSensor1 = await AsyncStorage.getItem(`pond_${pondId}_numAeratorsSensor1`);
         const savedNumAeratorsSensor2 = await AsyncStorage.getItem(`pond_${pondId}_numAeratorsSensor2`);
         if (savedNumAeratorsSensor1 !== null && savedNumAeratorsSensor2 !== null) {
-          const numSensor1 = parseInt(savedNumAeratorsSensor1, 10);
-          const numSensor2 = parseInt(savedNumAeratorsSensor2, 10);
-          setNumAeratorsSensor1(numSensor1);
-          setNumAeratorsSensor2(numSensor2);
-          setTotalCurrentRequired(3.5 * (numSensor1 + numSensor2));
-          fetchCurrentValues(numSensor1, numSensor2);
+          setNumAeratorsSensor1(savedNumAeratorsSensor1);
+          setNumAeratorsSensor2(savedNumAeratorsSensor2);
         }
       } catch (error) {
         console.error('Failed to load pond data:', error);
       }
     };
-
     loadPondData();
   }, [pondId]);
 
-  const fetchCurrentValues = async (numAeratorsSensor1, numAeratorsSensor2) => {
+  const calculateCurrent = (numAerators) => {
+    const aerators = parseInt(numAerators, 10);
+    return isNaN(aerators) ? 0 : (3.5 * aerators).toFixed(2);
+  };
+
+  const handleNumAeratorsChange = (value, sensor) => {
+    if (sensor === 'sensor1') {
+      setNumAeratorsSensor1(value);
+    } else if (sensor === 'sensor2') {
+      setNumAeratorsSensor2(value);
+    }
+  };
+
+  const handleSave = async () => {
     try {
-      const response = await fetch('https://run.mocky.io/v3/93f48733-516c-4f47-b967-a0ffb4396016');
-      const data = await response.json();
-
-      console.log('API Response:', data); // Log the entire response
-
-      if (response.ok) {
-        const stringPondId = pondId.toString();
-        let pondData = data.ponds.find(pond => pond.pondId === stringPondId);
-
-        console.log('Matching Pond Data:', pondData); // Log the matching pond data
-
-        // If no pond data is found for the given pondId, generate it dynamically
-        if (!pondData) {
-          console.log(`Pond data not found for pondId: ${pondId}, generating dynamically.`);
-          pondData = {
-            pondId: stringPondId,
-            pondName: `Pond ${pondId}`,
-            i1: (Math.random() * 10).toFixed(2),
-            i2: (Math.random() * 10).toFixed(2),
-          };
-        }
-
-        const currentSensor1 = parseFloat(pondData.i1);
-        const currentSensor2 = parseFloat(pondData.i2);
-        const totalCurrent = currentSensor1 + currentSensor2;
-        setTotalCurrentTaken(totalCurrent);
-
-        // Ensure total current required is greater than total current taken
-        if (totalCurrent >= (3.5 * (numAeratorsSensor1 + numAeratorsSensor2))) {
-          setTotalCurrentRequired(totalCurrent + 1); // Adding 1 to ensure it's greater
-        } else {
-          setTotalCurrentRequired(3.5 * (numAeratorsSensor1 + numAeratorsSensor2));
-        }
-
-        // Generate random values for aerators
-        let aeratorsDataSensor1 = [];
-        let remainingCurrentSensor1 = currentSensor1;
-
-        for (let i = 1; i <= numAeratorsSensor1; i++) {
-          let current;
-          if (i === numAeratorsSensor1) {
-            current = remainingCurrentSensor1; // Assign the remaining current to the last aerator
-          } else {
-            current = parseFloat((Math.random() * (remainingCurrentSensor1 / (numAeratorsSensor1 - i + 1))).toFixed(2));
-            remainingCurrentSensor1 -= current;
-          }
-          aeratorsDataSensor1.push({ aeratorId: i, current });
-        }
-
-        let aeratorsDataSensor2 = [];
-        let remainingCurrentSensor2 = currentSensor2;
-
-        for (let i = 1; i <= numAeratorsSensor2; i++) {
-          let current;
-          if (i === numAeratorsSensor2) {
-            current = remainingCurrentSensor2; // Assign the remaining current to the last aerator
-          } else {
-            current = parseFloat((Math.random() * (remainingCurrentSensor2 / (numAeratorsSensor2 - i + 1))).toFixed(2));
-            remainingCurrentSensor2 -= current;
-          }
-          aeratorsDataSensor2.push({ aeratorId: i, current });
-        }
-
-        setAeratorsSensor1(aeratorsDataSensor1);
-        setAeratorsSensor2(aeratorsDataSensor2);
-      } else {
-        console.error('Failed to fetch current values:', data.message);
-      }
+      await AsyncStorage.setItem(`pond_${pondId}_numAeratorsSensor1`, numAeratorsSensor1);
+      await AsyncStorage.setItem(`pond_${pondId}_numAeratorsSensor2`, numAeratorsSensor2);
+      alert('Data saved successfully!');
     } catch (error) {
-      console.error('Error fetching current values:', error);
+      console.error('Failed to save pond data:', error);
     }
   };
 
-  const handleNumAeratorsChange = async (value, sensor) => {
-    const num = parseInt(value, 10);
-    if (!isNaN(num)) {
-      if (sensor === 'sensor1') {
-        setNumAeratorsSensor1(num);
-      } else {
-        setNumAeratorsSensor2(num);
-      }
-      const totalNumAerators = (sensor === 'sensor1' ? num : numAeratorsSensor1) + (sensor === 'sensor2' ? num : numAeratorsSensor2);
-      setTotalCurrentRequired(3.5 * totalNumAerators);
-      fetchCurrentValues((sensor === 'sensor1' ? num : numAeratorsSensor1), (sensor === 'sensor2' ? num : numAeratorsSensor2));
+  const handleOkPress = () => {
+    const currentSensor1 = calculateCurrent(numAeratorsSensor1);
+    const currentSensor2 = calculateCurrent(numAeratorsSensor2);
 
-      try {
-        await AsyncStorage.setItem(`pond_${pondId}_numAerators${sensor === 'sensor1' ? 'Sensor1' : 'Sensor2'}`, value);
-      } catch (error) {
-        console.error('Failed to save pond data:', error);
-      }
-    } else {
-      if (sensor === 'sensor1') {
-        setNumAeratorsSensor1('');
-      } else {
-        setNumAeratorsSensor2('');
-      }
-      setTotalCurrentRequired(0);
-      setTotalCurrentTaken(0);
-    }
-  };
-
-  const getPieChartData = (current) => {
-    const highThreshold = 7;
-    const mediumThreshold = 4;
-    return [
-      { name: 'High', current: current >= highThreshold ? 1 : 0, color: '#9deb56', legendFontColor: '#7F7F7F', legendFontSize: 15 },
-      { name: 'Medium', current: current >= mediumThreshold && current < highThreshold ? 1 : 0, color: '#f5ff89', legendFontColor: '#7F7F7F', legendFontSize: 15 },
-      { name: 'Low', current: current < mediumThreshold ? 1 : 0, color: '#ff4242', legendFontColor: '#7F7F7F', legendFontSize: 15 },
-    ];
+    navigation.navigate('screens/PondDetailSensors', {
+      pondId,
+      numAeratorsSensor1,
+      numAeratorsSensor2,
+      currentSensor1,
+      currentSensor2,
+    });
   };
 
   return (
@@ -163,7 +77,7 @@ const PondDetail = () => {
           style={styles.input}
           placeholder="Enter number of Aerators for Sensor 1"
           keyboardType="numeric"
-          value={numAeratorsSensor1.toString()}
+          value={numAeratorsSensor1}
           onChangeText={(value) => handleNumAeratorsChange(value, 'sensor1')}
         />
       </View>
@@ -174,7 +88,7 @@ const PondDetail = () => {
           style={styles.input}
           placeholder="Enter number of Aerators for Sensor 2"
           keyboardType="numeric"
-          value={numAeratorsSensor2.toString()}
+          value={numAeratorsSensor2}
           onChangeText={(value) => handleNumAeratorsChange(value, 'sensor2')}
         />
       </View>
@@ -186,61 +100,23 @@ const PondDetail = () => {
           <Text style={styles.detailValue}>{numAeratorsSensor1}</Text>
         </View>
         <View style={styles.detailItem}>
+          <Text style={styles.detailLabel}>Current Passing through Sensor 1:</Text>
+          <Text style={styles.detailValue}>{calculateCurrent(numAeratorsSensor1)} A</Text>
+        </View>
+        <View style={styles.detailItem}>
           <Text style={styles.detailLabel}>Number of Aerators for Sensor 2:</Text>
           <Text style={styles.detailValue}>{numAeratorsSensor2}</Text>
         </View>
         <View style={styles.detailItem}>
-          <Text style={styles.detailLabel}>Total Current Taken:</Text>
-          <Text style={styles.detailValue}>{totalCurrentTaken} A</Text>
-        </View>
-        <View style={styles.detailItem}>
-          <Text style={styles.detailLabel}>Total Current Required:</Text>
-          <Text style={styles.detailValue}>{totalCurrentRequired} A</Text>
+          <Text style={styles.detailLabel}>Current Passing through Sensor 2:</Text>
+          <Text style={styles.detailValue}>{calculateCurrent(numAeratorsSensor2)} A</Text>
         </View>
       </View>
 
-      <View style={styles.chartContainer}>
-        <Text style={styles.sectionTitle}>Aerators Current Distribution</Text>
-        <Text style={styles.subSectionTitle}>Sensor 1 Aerators:</Text>
-        {aeratorsSensor1.map(aerator => (
-          <View key={aerator.aeratorId} style={styles.aeratorItem}>
-            <Text style={styles.aeratorLabel}>Aerator {aerator.aeratorId}:</Text>
-            <Text style={styles.aeratorValue}>{aerator.current} A</Text>
-            <PieChart
-              data={getPieChartData(aerator.current)}
-              width={screenWidth}
-              height={120}
-              chartConfig={{
-                color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-              }}
-              accessor="current"
-              backgroundColor="transparent"
-              paddingLeft="15"
-              center={[10, 10]}
-              absolute
-            />
-          </View>
-        ))}
-        <Text style={styles.subSectionTitle}>Sensor 2 Aerators:</Text>
-        {aeratorsSensor2.map(aerator => (
-          <View key={aerator.aeratorId} style={styles.aeratorItem}>
-            <Text style={styles.aeratorLabel}>Aerator {aerator.aeratorId}:</Text>
-            <Text style={styles.aeratorValue}>{aerator.current} A</Text>
-            <PieChart
-              data={getPieChartData(aerator.current)}
-              width={screenWidth}
-              height={120}
-              chartConfig={{
-                color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
-              }}
-              accessor="current"
-              backgroundColor="transparent"
-              paddingLeft="15"
-              center={[10, 10]}
-              absolute
-            />
-          </View>
-        ))}
+      <View style={styles.buttonContainer}>
+        <TouchableOpacity style={styles.button} onPress={handleOkPress}>
+          <Text style={styles.buttonText}>OK</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -248,76 +124,74 @@ const PondDetail = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     padding: 20,
   },
   header: {
     marginBottom: 20,
-    alignItems: 'center',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 5,
+    marginBottom: 10,
   },
   pondId: {
-    fontSize: 16,
+    fontSize: 18,
     color: '#666',
   },
   inputContainer: {
     marginBottom: 20,
   },
   inputLabel: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 5,
   },
   input: {
     height: 40,
-    borderColor: '#ccc',
+    borderColor: '#ddd',
     borderWidth: 1,
     borderRadius: 5,
     paddingHorizontal: 10,
+    fontSize: 16,
   },
   detailsContainer: {
     marginBottom: 20,
   },
   sectionTitle: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 10,
   },
   detailItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 5,
+    marginBottom: 10,
   },
   detailLabel: {
     fontSize: 16,
-    color: '#666',
+    fontWeight: 'bold',
   },
   detailValue: {
     fontSize: 16,
+  },
+  buttonContainer: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: '#007BFF',
+    borderRadius: 5,
+    paddingVertical: 15,
+    paddingHorizontal: 40,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 5,
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: 18,
     fontWeight: 'bold',
-  },
-  chartContainer: {
-    marginBottom: 20,
-  },
-  subSectionTitle: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginVertical: 10,
-  },
-  aeratorItem: {
-    marginBottom: 20,
-  },
-  aeratorLabel: {
-    fontSize: 16,
-    marginBottom: 5,
-  },
-  aeratorValue: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 5,
   },
 });
 

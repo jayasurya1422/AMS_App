@@ -10,6 +10,7 @@ const Layout = () => {
       <Stack.Screen name="screens/HomeScreen" options={{ headerShown: false }} />
       <Stack.Screen name="screens/Ponds" options={{ headerShown: false }} />
       <Stack.Screen name="screens/PondDetail" options={{ headerShown: false }} />
+      <Stack.Screen name="screens/PondDetailSensors" options={{ headerShown: false }} />
       <Stack.Screen name="screens/Notifications" options={{ headerShown: false }} />    
       <Stack.Screen name="screens/Account" options={{ headerShown: false }} />    
     </Stack>
