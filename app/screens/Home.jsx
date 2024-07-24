@@ -1,6 +1,6 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
-import { FontAwesome } from '@expo/vector-icons'; // Assuming you're using Expo
+import { View, Text, StyleSheet, ScrollView, Image } from 'react-native';
+import { FontAwesome5 } from '@expo/vector-icons'; // For colorful icons
 
 const Home = () => (
   <ScrollView contentContainerStyle={styles.container}>
@@ -8,9 +8,11 @@ const Home = () => (
       <Text style={styles.title}>Welcome to AMS</Text>
       <Text style={styles.subtitle}>Aerator Monitoring System</Text>
     </View>
-    <Text style={styles.quote}>
-      "Ensuring optimal conditions for your aquaculture operations, one aerator at a time."
-    </Text>
+    <View style={styles.heroSection}>
+      <Text style={styles.quote}>
+        "Ensuring optimal conditions for your aquaculture operations, one aerator at a time."
+      </Text>
+    </View>
     <Text style={styles.description}>
       The Aerator Monitoring System (AMS) helps prawn and fish farmers ensure their aerators are working properly, especially during the night when aerators are crucial for providing dissolved oxygen in the water.
     </Text>
@@ -18,23 +20,23 @@ const Home = () => (
       <Text style={styles.sectionTitle}>Key Features</Text>
       <View style={styles.featureList}>
         <View style={styles.featureItem}>
-          <FontAwesome name="tachometer" size={24} color="#1976d2" style={styles.icon} />
+          <FontAwesome5 name="tachometer-alt" size={24} color="#ff5722" style={styles.icon} />
           <Text style={styles.featureText}>Real-time aerator status monitoring</Text>
         </View>
         <View style={styles.featureItem}>
-          <FontAwesome name="bell" size={24} color="#1976d2" style={styles.icon} />
+          <FontAwesome5 name="bell" size={24} color="#4caf50" style={styles.icon} />
           <Text style={styles.featureText}>Instant notifications on aerator issues</Text>
         </View>
         <View style={styles.featureItem}>
-          <FontAwesome name="tint" size={24} color="#1976d2" style={styles.icon} />
+          <FontAwesome5 name="tint" size={24} color="#2196f3" style={styles.icon} />
           <Text style={styles.featureText}>Monitoring of dissolved oxygen levels</Text>
         </View>
         <View style={styles.featureItem}>
-          <FontAwesome name="plus-circle" size={24} color="#1976d2" style={styles.icon} />
+          <FontAwesome5 name="plus-circle" size={24} color="#ffeb3b" style={styles.icon} />
           <Text style={styles.featureText}>Easy pond and aerator management</Text>
         </View>
         <View style={styles.featureItem}>
-          <FontAwesome name="history" size={24} color="#1976d2" style={styles.icon} />
+          <FontAwesome5 name="history" size={24} color="#9c27b0" style={styles.icon} />
           <Text style={styles.featureText}>Historical data and reports</Text>
         </View>
       </View>
@@ -52,53 +54,60 @@ const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
     paddingHorizontal: 20,
-    paddingVertical: 40,
-    backgroundColor: '#f0f8ff', // Light blue background
+    paddingVertical: 30,
+    backgroundColor: '#f5f5f5', // Light gray background for modern look
   },
   header: {
-    marginBottom: 30,
+    marginBottom: 20,
     alignItems: 'center',
   },
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#1976d2', // Dark blue title
+    color: '#333333', // Dark gray title
     textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.3)',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 4,
   },
   subtitle: {
-    fontSize: 20,
-    color: '#555555', // Dark gray subtitle
+    fontSize: 18,
+    color: '#666666', // Medium gray subtitle
     textAlign: 'center',
     fontStyle: 'italic',
     marginVertical: 5,
   },
+  heroSection: {
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  heroImage: {
+    width: '100%',
+    height: 200,
+    borderRadius: 10,
+    marginBottom: 15,
+    borderColor: '#dddddd',
+    borderWidth: 1,
+  },
   quote: {
     fontSize: 18,
-    color: '#1976d2', // Dark blue quote
-    marginBottom: 20,
+    color: '#555555', // Medium gray quote
     textAlign: 'center',
     fontStyle: 'italic',
-    paddingHorizontal: 10,
-    lineHeight: 24,
-    backgroundColor: '#e3f2fd',
-    borderRadius: 10,
+    paddingHorizontal: 15,
     paddingVertical: 10,
+    backgroundColor: '#ffffff', // White background for contrast
+    borderRadius: 10,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 6,
+    elevation: 5,
   },
   description: {
     fontSize: 16,
     color: '#333333', // Dark gray description
-    lineHeight: 22,
+    lineHeight: 24,
     marginBottom: 20,
     textAlign: 'center',
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
   },
   card: {
     backgroundColor: '#ffffff', // White background for cards
@@ -108,18 +117,17 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.2,
-    shadowRadius: 6,
-    elevation: 3,
+    shadowRadius: 8,
+    elevation: 5,
     borderWidth: 1,
     borderColor: '#e0e0e0',
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#1976d2', // Dark blue section title
+    color: '#333333', // Dark gray section title
     marginBottom: 10,
     textAlign: 'center',
-    textDecorationLine: 'underline',
   },
   featureList: {
     marginTop: 10,
@@ -129,13 +137,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 15,
     padding: 12,
-    backgroundColor: '#e3f2fd', // Light blue background for feature items
+    backgroundColor: '#ffffff', // White background for feature items
     borderRadius: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 2,
+    shadowRadius: 4,
     elevation: 2,
+    borderColor: '#dddddd',
+    borderWidth: 1,
   },
   icon: {
     marginRight: 12,

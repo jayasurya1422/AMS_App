@@ -68,7 +68,7 @@ const PondDetail = () => {
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>{pondName}</Text>
-        <Text style={styles.pondId}>ID: {pondId}</Text>
+        <Text style={styles.pondId}>{`ID: ${pondId}`}</Text>
       </View>
 
       <View style={styles.inputContainer}>
@@ -126,14 +126,20 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#F7F9FC',
   },
   header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     marginBottom: 20,
+    padding: 15,
+    borderRadius: 10,
   },
   title: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: 'bold',
-    marginBottom: 10,
+    color: '#4A90E2',
   },
   pondId: {
     fontSize: 18,
@@ -141,52 +147,78 @@ const styles = StyleSheet.create({
   },
   inputContainer: {
     marginBottom: 20,
+    padding: 10,
+    borderWidth:2,
+    borderColor: '#333',
+    borderRadius: 8,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   inputLabel: {
     fontSize: 18,
     marginBottom: 5,
+    color: '#333',
   },
   input: {
     height: 40,
-    borderColor: '#ddd',
-    borderWidth: 1,
+    borderColor: '#333', // Dark border color
+    borderWidth: 2, // Increased border width for emphasis
     borderRadius: 5,
     paddingHorizontal: 10,
     fontSize: 16,
+    backgroundColor: '#F9F9F9',
   },
   detailsContainer: {
     marginBottom: 20,
+    padding: 15,
+    borderWidth: 2,
+    borderColor: '#333',
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 15,
+    color: '#333',
   },
   detailItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 10,
+    marginBottom: 12,
   },
   detailLabel: {
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 17,
+    color: '#555',
   },
   detailValue: {
     fontSize: 16,
+    color: '#333',
+    fontWeight: '500',
   },
   buttonContainer: {
     marginTop: 20,
     alignItems: 'center',
   },
   button: {
-    backgroundColor: '#007BFF',
-    borderRadius: 5,
+    backgroundColor: '#4A90E2',
+    borderRadius: 25,
     paddingVertical: 15,
-    paddingHorizontal: 40,
+    paddingHorizontal: 50,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 3,
   },
   buttonText: {
     color: '#fff',
