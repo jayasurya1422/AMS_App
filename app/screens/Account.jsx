@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Image, Alert, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../config/firebase';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Ionicons } from '@expo/vector-icons';
+import UserSettingImage from '../../assets/images/UserSetting.png'; // Adjust the path if needed
 
 const Account = () => {
   const navigation = useNavigation();
@@ -81,18 +83,15 @@ const Account = () => {
     }
   };
 
-  const renderProfilePic = () => {
-    return (
-      <TouchableOpacity style={styles.profilePicContainer} onPress={handleChooseProfilePic}>
-        {profilePicUri ? (
-          <Image source={{ uri: profilePicUri }} style={styles.profilePic} />
-        ) : (
-          <Ionicons name="person-circle-outline" size={100} color="#ccc" />
-        )}
-        <Text style={styles.profilePicText}>Change Profile Picture</Text>
-      </TouchableOpacity>
-    );
-  };
+  const renderProfilePic = () => (
+    <TouchableOpacity style={styles.profilePicContainer} onPress={handleChooseProfilePic}>
+      <Image
+        source={UserSettingImage} // Directly use UserSettingImage
+        style={styles.profilePic}
+      />
+      <Text style={styles.profilePicText}>Change Profile Picture</Text>
+    </TouchableOpacity>
+  );
 
   if (loading) {
     return (
@@ -111,76 +110,80 @@ const Account = () => {
   }
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollContainer}>
-      <View style={styles.container}>
-        <View style={styles.header}>
-          <Text style={styles.title}>Account Settings</Text>
-          <TouchableOpacity
-            style={styles.editIcon}
-            onPress={() => setShowMenu(!showMenu)}
-          >
-            <Ionicons name="settings-outline" size={24} color="#007bff" />
-          </TouchableOpacity>
-        </View>
-
-        {showMenu && (
-          <View style={styles.menu}>
+    <LinearGradient colors={['#e0f7fa', '#80deea']} style={styles.gradientBackground}>
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.container}>
+          <View style={styles.header}>
+            <Text style={styles.title}>Account Settings</Text>
             <TouchableOpacity
-              style={styles.menuItem}
-              onPress={handleEditProfile}
+              style={styles.editIcon}
+              onPress={() => setShowMenu(!showMenu)}
             >
-              <Ionicons name="person-outline" size={24} color="#007bff" />
-              <Text style={styles.menuText}>Edit Profile</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[styles.menuItem, styles.logoutButton]}
-              onPress={handleLogout}
-            >
-              <Ionicons name="log-out-outline" size={24} color="#e74c3c" />
-              <Text style={[styles.menuText, { color: '#e74c3c' }]}>Logout</Text>
+              <Ionicons name="settings-outline" size={24} color="#007bff" />
             </TouchableOpacity>
           </View>
-        )}
 
-        <View style={styles.content}>
-          {renderProfilePic()}
-          {userDetails ? (
-            <>
-              <View style={styles.detailBox}>
-                <Text style={styles.detailLabel}>Email:</Text>
-                <Text style={styles.detailValue}>{userDetails.email}</Text>
-              </View>
-              <View style={styles.detailBox}>
-                <Text style={styles.detailLabel}>First Name:</Text>
-                <Text style={styles.detailValue}>{userDetails.firstName}</Text>
-              </View>
-              <View style={styles.detailBox}>
-                <Text style={styles.detailLabel}>Last Name:</Text>
-                <Text style={styles.detailValue}>{userDetails.lastName}</Text>
-              </View>
-              <View style={styles.detailBox}>
-                <Text style={styles.detailLabel}>Location:</Text>
-                <Text style={styles.detailValue}>{userDetails.location}</Text>
-              </View>
-              <View style={styles.detailBox}>
-                <Text style={styles.detailLabel}>Mobile Number:</Text>
-                <Text style={styles.detailValue}>{userDetails.mobileNumber}</Text>
-              </View>
-            </>
-          ) : (
-            <Text style={styles.contentText}>No user details available</Text>
+          {showMenu && (
+            <View style={styles.menu}>
+              <TouchableOpacity
+                style={styles.menuItem}
+                onPress={handleEditProfile}
+              >
+                <Ionicons name="person-outline" size={24} color="#007bff" />
+                <Text style={styles.menuText}>Edit Profile</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[styles.menuItem, styles.logoutButton]}
+                onPress={handleLogout}
+              >
+                <Ionicons name="log-out-outline" size={24} color="#e74c3c" />
+                <Text style={[styles.menuText, { color: '#e74c3c' }]}>Logout</Text>
+              </TouchableOpacity>
+            </View>
           )}
+
+          <View style={styles.content}>
+            {renderProfilePic()}
+            {userDetails ? (
+              <>
+                <View style={styles.detailBox}>
+                  <Text style={styles.detailLabel}>Email:</Text>
+                  <Text style={styles.detailValue}>{userDetails.email}</Text>
+                </View>
+                <View style={styles.detailBox}>
+                  <Text style={styles.detailLabel}>First Name:</Text>
+                  <Text style={styles.detailValue}>{userDetails.firstName}</Text>
+                </View>
+                <View style={styles.detailBox}>
+                  <Text style={styles.detailLabel}>Last Name:</Text>
+                  <Text style={styles.detailValue}>{userDetails.lastName}</Text>
+                </View>
+                <View style={styles.detailBox}>
+                  <Text style={styles.detailLabel}>Location:</Text>
+                  <Text style={styles.detailValue}>{userDetails.location}</Text>
+                </View>
+                <View style={styles.detailBox}>
+                  <Text style={styles.detailLabel}>Mobile Number:</Text>
+                  <Text style={styles.detailValue}>{userDetails.mobileNumber}</Text>
+                </View>
+              </>
+            ) : (
+              <Text style={styles.contentText}>No user details available</Text>
+            )}
+          </View>
         </View>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  gradientBackground: {
+    flex: 1, // Ensure the gradient covers the entire screen
+  },
   scrollContainer: {
     flexGrow: 1,
     padding: 20,
-    backgroundColor: '#f0f0f0',
   },
   container: {
     flex: 1,
@@ -206,17 +209,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     elevation: 5,
     padding: 10,
-    borderRadius: 8,
+    borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
-    shadowRadius: 2,
+    shadowRadius: 5,
     zIndex: 1,
   },
   menuItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
   menuText: {
     fontSize: 16,
@@ -232,47 +237,43 @@ const styles = StyleSheet.create({
   },
   detailBox: {
     backgroundColor: '#fff',
-    borderRadius: 10,
+    borderRadius: 12,
     padding: 20,
     marginBottom: 10,
     elevation: 3,
     width: '100%',
-  },
-  detailRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.3,
+    shadowRadius: 5,
+    flexDirection: 'row', // Align children horizontally
+    justifyContent: 'space-between', // Push children to opposite ends
   },
   detailLabel: {
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
+    flex: 1, // Take up available space
   },
   detailValue: {
     fontSize: 16,
-    color: '#555',
+    fontWeight: 'bold',
+    color: '#333',
+    textAlign: 'right', // Align text to the right
   },
   loadingContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
   },
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
   },
   errorText: {
-    fontSize: 18,
+    fontSize: 16,
     color: '#e74c3c',
-  },
-  contentText: {
-    fontSize: 18,
-    color: '#333',
-    textAlign: 'center',
-    marginTop: 20,
   },
   profilePicContainer: {
     alignItems: 'center',
@@ -282,11 +283,18 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 50,
+    borderWidth: 2,
+    borderColor: '#333', // Dark border color
+  },
+  profilePicIcon: {
+    borderWidth: 2,
+    borderColor: '#333', // Dark border color
+    borderRadius: 50,
+    padding: 10,
   },
   profilePicText: {
-    marginTop: 10,
-    color: '#007bff',
     fontSize: 16,
+    color: '#007bff',
   },
 });
 
