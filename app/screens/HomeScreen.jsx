@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Home from './Home';
-import Ponds from './Ponds';
+import Energy from './Energy';
 import Notifications from './Notifications';
 import Account from './Account';
 
@@ -71,8 +71,8 @@ const HomeScreen = () => {
 
             if (route.name === 'Home') {
               iconName = focused ? 'home' : 'home-outline';
-            } else if (route.name === 'Ponds') {
-              iconName = focused ? 'water' : 'water-outline';
+            } else if (route.name === 'Energy') {
+              iconName = focused ? 'flash' : 'flash-outline';
             } else if (route.name === 'Notifications') {
               iconName = focused ? 'notifications' : 'notifications-outline';
             } else if (route.name === 'Account') {
@@ -107,7 +107,7 @@ const HomeScreen = () => {
                   {props.descriptors[route.key].options.tabBarIcon({
                     focused: props.state.index === index,
                     color: props.state.index === index ? 'white' : 'gray',
-                    size: 25, // Adjusted size
+                    size: 25,
                   })}
                 </CustomTabBarButton>
               ))}
@@ -116,7 +116,7 @@ const HomeScreen = () => {
         )}
       >
         <Tab.Screen name="Home" component={Home} options={{ tabBarLabel: '' }} />
-        <Tab.Screen name="Ponds" component={Ponds} options={{ tabBarLabel: 'Ponds' }} />
+        <Tab.Screen name="Energy" component={Energy} options={{ tabBarLabel: 'Energy' }} />
         <Tab.Screen name="Notifications" component={Notifications} options={{ tabBarLabel: 'Notifications' }} />
         <Tab.Screen name="Account" component={Account} options={{ tabBarLabel: 'Account' }} />
       </Tab.Navigator>

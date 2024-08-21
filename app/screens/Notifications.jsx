@@ -10,8 +10,7 @@ const Notifications = () => {
 
   // State to store notifications
   const [notifications, setNotifications] = useState([
-    { id: 1, text: 'Your aerator has stopped working.', timestamp: '10:30 AM, July 10, 2024' },
-    { id: 2, text: 'Aerator maintenance is due.', timestamp: '9:15 AM, July 10, 2024' },
+    { id: 1, text: 'The power factor is in the normal range', timestamp: '10:30 AM, July 10, 2024' },
   ]);
 
   // Function to add a new notification for the added pond

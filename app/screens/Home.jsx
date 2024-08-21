@@ -4,38 +4,38 @@ import { LinearGradient } from 'expo-linear-gradient'; // Use expo-linear-gradie
 import { FontAwesome5 } from '@expo/vector-icons';
 
 const Home = () => (
-  <LinearGradient colors={['#b2f5ea', '#90cdf4']} style={styles.gradientBackground}>
+  <LinearGradient colors={['#f0f4c3', '#aed581']} style={styles.gradientBackground}>
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>Welcome to AMS</Text>
-        <Text style={styles.subtitle}>Aerator Monitoring System</Text>
+        <Text style={styles.title}>Welcome to EMS</Text>
+        <Text style={styles.subtitle}>Energy Monitoring System</Text>
       </View>
       <View style={styles.heroSection}>
         <Text style={styles.quote}>
-          "Ensuring optimal conditions for your aquaculture operations, one aerator at a time."
+          "Optimizing your energy consumption, one watt at a time."
         </Text>
       </View>
       <Text style={styles.description}>
-        The Aerator Monitoring System (AMS) helps prawn and fish farmers ensure their aerators are working properly, especially during the night when aerators are crucial for providing dissolved oxygen in the water.
+        The Energy Monitoring System (EMS) provides comprehensive monitoring of your electrical parameters, including power factor, current, power, active power, and energy. Stay alert with instant notifications when the power factor falls below 0.9.
       </Text>
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Key Features</Text>
         <View style={styles.featureList}>
           <View style={styles.featureItem}>
             <FontAwesome5 name="tachometer-alt" size={24} color="#ff5722" style={styles.icon} />
-            <Text style={styles.featureText}>Real-time aerator status monitoring</Text>
+            <Text style={styles.featureText}>Real-time power factor monitoring</Text>
           </View>
           <View style={styles.featureItem}>
-            <FontAwesome5 name="bell" size={24} color="#4caf50" style={styles.icon} />
-            <Text style={styles.featureText}>Instant notifications on aerator issues</Text>
+            <FontAwesome5 name="bolt" size={24} color="#4caf50" style={styles.icon} />
+            <Text style={styles.featureText}>Current and power measurements</Text>
           </View>
           <View style={styles.featureItem}>
-            <FontAwesome5 name="tint" size={24} color="#2196f3" style={styles.icon} />
-            <Text style={styles.featureText}>Monitoring of dissolved oxygen levels</Text>
+            <FontAwesome5 name="chart-bar" size={24} color="#2196f3" style={styles.icon} />
+            <Text style={styles.featureText}>Active power and energy consumption tracking</Text>
           </View>
           <View style={styles.featureItem}>
-            <FontAwesome5 name="plus-circle" size={24} color="#ffeb3b" style={styles.icon} />
-            <Text style={styles.featureText}>Easy pond and aerator management</Text>
+            <FontAwesome5 name="bell" size={24} color="#ffeb3b" style={styles.icon} />
+            <Text style={styles.featureText}>Instant alerts on power factor issues</Text>
           </View>
           <View style={styles.featureItem}>
             <FontAwesome5 name="history" size={24} color="#9c27b0" style={styles.icon} />
@@ -46,7 +46,7 @@ const Home = () => (
       <View style={styles.card}>
         <Text style={styles.sectionTitle}>Get Started</Text>
         <Text style={styles.description}>
-          To get started, navigate to the Ponds section to add your ponds and start monitoring your aerators. Stay informed and keep your aquaculture operations running smoothly with AMS!
+          To get started, navigate to the Energy section to add your monitoring points and start tracking your energy parameters. Ensure your operations run efficiently with EMS!
         </Text>
       </View>
     </ScrollView>
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     fontStyle: 'italic',
     paddingHorizontal: 15,
     paddingVertical: 10,
-    backgroundColor: '#e0f2f1',
+    backgroundColor: '#f0f4c3',
     borderRadius: 10,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
